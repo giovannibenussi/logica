@@ -1,3 +1,7 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package logica;
 
 import java.util.Comparator;
@@ -7,9 +11,9 @@ import java.util.Comparator;
  * @author gbenussi
  */
 public class Jugador implements Comparator<Jugador> {
-    private int calificacion;
-    private String nombre;
-    private String Posicion;
+    int calificacion;
+    String nombre;
+    String Posicion;
 
     public String getPosicion() {
         return Posicion;

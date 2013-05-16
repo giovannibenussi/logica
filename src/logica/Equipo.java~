@@ -1,30 +1,14 @@
 package logica;
+
 import java.util.ArrayList;
 
 public class Equipo {
-    private ArrayList<Jugador> Jugadores = new ArrayList<>();
-    private String tipo;
-    private int minimo_jugadores, maximo_jugadores;
+    ArrayList<Jugador> Jugadores = new ArrayList<>();
+    String tipo;
+    int minimo_jugadores, maximo_jugadores;
 
     public int cantidadMaxima(){
         return Math.min(this.size(),this.maximo());
-    }
-    
-    public void ver(){
-        for(int i=0;i<Jugadores.size();i++)
-            System.out.print(Jugadores.get(i).getNombre());
-        System.out.println("");
-    }
-    
-    public ArrayList<Jugador> getJugadores(){
-        return this.Jugadores;
-    }
-    
-    public void remove(int i){
-        Jugadores.remove(i);
-    }
-    public Jugador get(int i){
-        return this.Jugadores.get(i);
     }
     
     public int maximo(){
