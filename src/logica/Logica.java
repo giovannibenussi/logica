@@ -20,8 +20,11 @@ public class Logica {
     }
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
+        //La variable inicio sera utilizada para calcular el tiempo total
+        //en milisegundos transcurridos en la ejecucion del programa.
+        long inicio = System.currentTimeMillis();
         //Codigo para abrir el archivo de entrada
-        String nombre_archivo = "prueba.txt";
+        String nombre_archivo = args[0];
         File file = new File(nombre_archivo);
         BufferedReader entrada = new BufferedReader(new FileReader(file));
         String linea;
@@ -56,7 +59,6 @@ public class Logica {
                     Atacantes.anadirJugador(aux);
                 }
             }
-
             /*
              * La cantidad maxima de jugadores para determinada posicion esta
              * dada por la formula 2.3.1
@@ -94,9 +96,81 @@ public class Logica {
             Equipo Primero;
             Equipo Segundo;
             Equipo Tercero;
-            boolean atacantes_mayor_defensas = promedio_atacantes > promedio_defensas;
-            boolean atacantes_mayor_mediocampistas = promedio_atacantes > promedio_mediocampistas;
-            boolean defensas_mayor_mediocampistas = promedio_defensas > promedio_mediocampistas;
+            //boolean atacantes_mayor_defensas = promedio_atacantes > promedio_defensas;
+            //boolean atacantes_mayor_mediocampistas = promedio_atacantes > promedio_mediocampistas;
+            //boolean defensas_mayor_mediocampistas = promedio_defensas > promedio_mediocampistas;
+            boolean atacantes_mayor_defensas = Atacantes.size() > Defensas.size();
+            boolean atacantes_mayor_mediocampistas = Atacantes.size() > Mediocampistas.size();
+            boolean defensas_mayor_mediocampistas = Defensas.size() > Mediocampistas.size();
+            if (atacantes_mayor_defensas && atacantes_mayor_mediocampistas) {
+                Primero = Atacantes;
+                if (defensas_mayor_mediocampistas) {
+                    Segundo = Defensas;
+                    Tercero = Mediocampistas;
+                } else {
+                    Segundo = Mediocampistas;
+                    Tercero = Defensas;
+                }
+            } else if (!atacantes_mayor_defensas && defensas_mayor_mediocampistas) {
+                Primero = Defensas;
+                if (atacantes_mayor_mediocampistas) {
+                    Segundo = Atacantes;
+                    Tercero = Mediocampistas;
+                } else {
+                    Segundo = Mediocampistas;
+                    Tercero = Atacantes;
+                }
+            } else {
+                Primero = Mediocampistas;
+                if (atacantes_mayor_defensas) {
+                    Segundo = Atacantes;
+                    Tercero = Defensas;
+                } else {
+                    Segundo = Defensas;
+                    Tercero = Atacantes;
+                }
+            }
+            /*
+             * Como un jugador que juegue en mas de una posicion debe jugar
+             * en la posicion que tenga menos jugadores,
+             * eliminaremos cada jugador que deba ir en la posicion de menos integrantes
+             * tenga de las demas posiciones.
+             */
+
+            //Recorremos cada jugador del equipo con menos jugadores
+//            System.out.println(cantidad_tercero+"\n"+Tercero.get(0).+cantidad_segundo+"\n"+cantidad_primero);
+            for (int i = 0; i < Tercero.size(); i++) {
+                //si el jugador esta en el segundo equipo con mas jugadores
+                for (int j = 0; j < Segundo.size(); j++) {
+                    if (Segundo.get(j).getNombre() == null ? Tercero.get(i).getNombre() == null : Segundo.get(j).getNombre().equals(Tercero.get(i).getNombre())) {
+                        Segundo.remove(j);
+                        j = 0;
+                    }
+                }
+            }
+
+            for (int i = 0; i < Tercero.size(); i++) {
+                //si el jugador esta en el segundo equipo con mas jugadores
+                for (int j = 0; j < Primero.size(); j++) {
+                    if (Primero.get(j).getNombre() == null ? Tercero.get(i).getNombre() == null : Primero.get(j).getNombre().equals(Tercero.get(i).getNombre())) {
+                        Primero.remove(j);
+                        j = 0;
+                    }
+                }
+            }
+
+            for (int i = 0; i < Segundo.size(); i++) {
+                //si el jugador esta en el segundo equipo con mas jugadores
+                for (int j = 0; j < Primero.size(); j++) {
+                    if (Primero.get(j).getNombre() == null ? Segundo.get(i).getNombre() == null : Primero.get(j).getNombre().equals(Segundo.get(i).getNombre())) {
+                        Primero.remove(j);
+                        j = 0;
+                    }
+                }
+            }
+            atacantes_mayor_defensas = promedio_atacantes > promedio_defensas;
+            atacantes_mayor_mediocampistas = promedio_atacantes > promedio_mediocampistas;
+            defensas_mayor_mediocampistas = promedio_defensas > promedio_mediocampistas;
             if (atacantes_mayor_defensas && atacantes_mayor_mediocampistas) {
                 Primero = Atacantes;
                 if (defensas_mayor_mediocampistas) {
@@ -126,8 +200,6 @@ public class Logica {
                 }
             }
 
-
-
             //Calculamos la cantidad de jugadores por cada posicion
             int jugadores_disponibles = 6;
             int cantidad_primero = Math.min(Primero.cantidadMaxima(), jugadores_disponibles);
@@ -147,56 +219,7 @@ public class Logica {
                 cantidad_segundo--;
                 cantidad_tercero = 1;
             }
-
-                        /*
-             * Como un jugador que juegue en mas de una posicion debe jugar
-             * en la posicion que tenga menos jugadores,
-             * eliminaremos cada jugador que deba ir en la posicion de menos integrantes
-             * tenga de las demas posiciones.
-             */
-
-            //Recorremos cada jugador del equipo con menos jugadores
-//            System.out.println(cantidad_tercero+"\n"+Tercero.get(0).+cantidad_segundo+"\n"+cantidad_primero);
-            for (int i = 0; i <= cantidad_tercero; i++) {
-                //si el jugador esta en el segundo equipo con mas jugadores
-                for (int j = 0; j < Segundo.size(); j++) {
-                    Tercero.ver();
-                    Segundo.ver();
-                    System.out.println(Segundo.get(j).getNombre()+" == " + Tercero.get(i).getNombre());
-                    if (Segundo.get(j).getNombre() == null ? Tercero.get(i).getNombre() == null : Segundo.get(j).getNombre().equals(Tercero.get(i).getNombre())) {                        
-                    System.out.println("Elimine");
-                        Segundo.remove(j);
-                        j = 0;
-                    }
-                }
-            }
-
-            for (int i = 0; i <= cantidad_tercero; i++) {
-                Tercero.ver();
-                Primero.ver();
-                //si el jugador esta en el segundo equipo con mas jugadores
-                for (int j = 0; j < Primero.size(); j++) {
-                    if (Primero.get(j).getNombre() == null ? Tercero.get(i).getNombre() == null : Primero.get(j).getNombre().equals(Tercero.get(i).getNombre())) {
-                        Primero.remove(j);
-                        j = 0;
-                        System.out.println("Elimine...");
-                    }
-                }
-            }
-
-            for (int i = 0; i <= cantidad_segundo; i++) {
-                Segundo.ver();
-                Primero.ver();
-                //si el jugador esta en el segundo equipo con mas jugadores
-                for (int j = 0; j < Primero.size(); j++) {
-                    if (Primero.get(j).getNombre() == null ? Segundo.get(i).getNombre() == null : Primero.get(j).getNombre().equals(Segundo.get(i).getNombre())) {
-                        System.out.println("Elimine:");
-                        Primero.remove(j);
-                        j = 0;
-                    }
-                }
-            }
-
+            
             //Comprobamos si se pued formar un equipo
             if (!(Defensas.cantidadMaxima()
                     + Atacantes.cantidadMaxima()
@@ -204,7 +227,7 @@ public class Logica {
                 System.out.println("No hay una cantidad suficiente de jugadores para crear un equipo");
                 System.exit(0);
             }
-            
+
             int puntaje = 0;
 
             for (int i = 0; i < cantidad_primero; i++) {
@@ -236,5 +259,6 @@ public class Logica {
             //Leemos la cantidad de jugadores
             n = Integer.parseInt(entrada.readLine());
         }
+        System.out.println("Tiempo total: "+(System.currentTimeMillis()-inicio)+" ms");
     }
 }

@@ -6,14 +6,12 @@ public class Equipo {
     private String tipo;
     private int minimo_jugadores, maximo_jugadores;
 
+    public String getTipo() {
+        return tipo;
+    }
+
     public int cantidadMaxima(){
         return Math.min(this.size(),this.maximo());
-    }
-    
-    public void ver(){
-        for(int i=0;i<Jugadores.size();i++)
-            System.out.print(Jugadores.get(i).getNombre());
-        System.out.println("");
     }
     
     public ArrayList<Jugador> getJugadores(){
